@@ -12,6 +12,10 @@ export interface Cat {
   isAdopted: boolean;
 }
 
+export interface EditableCat extends Cat {
+  isEditing: boolean;
+}
+
 export interface User {
   id?: number;
   isAdmin?: boolean;

@@ -15,7 +15,6 @@ export class AdminPageComponent implements OnInit {
   users: User[];
   pendingFosterApplications: FosterCare[];
   addCatForm: FormGroup;
-  editCatForm: FormGroup;
   cats: Cat[];
   catIllnesses: string[] = [];
 
@@ -39,11 +38,6 @@ export class AdminPageComponent implements OnInit {
       isVetted: [false],
       isNeutered: [false],
       hasWorms: [false]
-    });
-    this.editCatForm = this.formBuilder.group({
-      id: ['', Validators.required],
-      name: ['', Validators.required],
-      age: ['', Validators.compose([Validators.required, Validators.max(30)])],
     });
   }
 
@@ -94,17 +88,6 @@ export class AdminPageComponent implements OnInit {
     });
   }
 
-  editCat(): void {
-    const updatedCat = this.editCatForm.value as Cat;
-    this.catService.upsertCat(updatedCat).subscribe((cat: Cat) => {
-      const index: number = this.cats.findIndex(cat => cat.id === cat.id);
-      if (index >= 0) {
-        alert(`החתול נערך בהצלחה`);
-        this.router.navigate(['/all-cats']);
-      }
-    });
-  }
-
   addIllness(): void {
     const illness = this.addCatForm.get('illnesses')?.value;
     if (illness) {
@@ -122,6 +105,3 @@ export class AdminPageComponent implements OnInit {
     return `${this.users[index].firstName} ${this.users[index].lastName}`;
   }
 }
-
-//TODO: Edit cat
-//TODO: Check mailing system

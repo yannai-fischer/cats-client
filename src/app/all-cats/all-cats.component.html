@@ -3,16 +3,67 @@
     <div class="col-sm-4 mb-3" *ngFor="let cat of cats">
       <div class="card">
         <div class="card-body">
-          <h5 class="card-title">{{cat.name}}</h5>
-          <p class="card-text">גיל: {{cat.age}}</p>
-          <p class="card-text">{{cat.sex == 'male' ? 'זכר' : 'נקבה'}}</p>
-          <p class="card-text">{{cat.isVaccinated ? 'מחוסן' : 'לא מחוסן'}}</p>
-          <p class="card-text">{{cat.isVetted ? 'נבדק' : 'לא נבדק'}}</p>
-          <p class="card-text">{{cat.isNeutered ? '' : 'לא'}} מעוקר</p>
-          <p class="card-text">{{cat.hasWorms ? '' : 'לא'}} מתולע</p>
-          <p class="card-text">{{cat.illnesses.join(', ')}}</p>
-          <p class="card-text" *ngIf="cat.illnesses.length == 1 && cat.illnesses[0] == ''">אין מחלות</p>
-          <a *ngIf="isAdmin" class="btn btn-primary" (click)="adoptCat(cat)">מסור לאימוץ</a>
+          <h5 class="card-title">{{ cat.name }}</h5>
+          <form [formGroup]="catForm" *ngIf="cat.isEditing" (ngSubmit)="saveCat(cat)">
+            <div class="form-group">
+              <label for="catName">שם</label>
+              <input type="text" id="catName" formControlName="name" class="form-control" required>
+              <div *ngIf="catForm.controls?.['name']?.invalid && catForm.controls?.['name']?.touched" class="text-danger">
+                יש להזין שם תקין
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="catAge">גיל</label>
+              <input type="number" id="catAge" formControlName="age" class="form-control" required>
+              <div *ngIf="catForm.controls?.['age']?.invalid && catForm.controls?.['age']?.touched" class="text-danger">
+                יש להזין גיל תקין
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="catSex">מין</label>
+              <select id="catSex" formControlName="sex" class="form-control" required>
+                <option value="male">זכר</option>
+                <option value="female">נקבה</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="catIsVaccinated">מחוסן</label>
+              <input type="checkbox" id="catIsVaccinated" formControlName="isVaccinated">
+            </div>
+            <div class="form-group">
+              <label for="catIsVetted">נבדק וטרינרית</label>
+              <input type="checkbox" id="catIsVetted" formControlName="isVetted">
+            </div>
+            <div class="form-group">
+              <label for="catIsNeutered">מעוקר</label>
+              <input type="checkbox" id="catIsNeutered" formControlName="isNeutered">
+            </div>
+            <div class="form-group">
+              <label for="catHasWorms">מתולע</label>
+              <input type="checkbox" id="catHasWorms" formControlName="hasWorms">
+            </div>
+            <div class="form-group">
+              <label for="catIllnesses">מחלות</label>
+              <input type="text" id="catIllnesses" formControlName="illnesses" class="form-control">
+              <div *ngIf="catForm.controls?.['illnesses']?.invalid && catForm.controls?.['illnesses']?.touched" class="text-danger">
+                יש להזין מחלות תקינות
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" [disabled]="catForm.invalid">שמור</button>
+            <button type="button" class="btn btn-secondary" (click)="cancelEdit(cat)">ביטול</button>
+          </form>
+          <div *ngIf="!cat.isEditing">
+            <p class="card-text">גיל: {{ cat.age }}</p>
+            <p class="card-text">{{ cat.sex == 'male' ? 'זכר' : 'נקבה' }}</p>
+            <p class="card-text">{{ cat.isVaccinated ? 'מחוסן' : 'לא מחוסן' }}</p>
+            <p class="card-text">{{ cat.isVetted ? 'נבדק' : 'לא נבדק' }}</p>
+            <p class="card-text">{{ cat.isNeutered ? '' : 'לא' }} מעוקר</p>
+            <p class="card-text">{{ cat.hasWorms ? '' : 'לא' }} מתולע</p>
+            <p class="card-text">{{ cat?.['illnesses']?.join(', ') }}</p>
+            <p class="card-text" *ngIf="cat?.['illnesses']?.length === 1 && cat?.['illnesses']?.[0] === ''">אין מחלות</p>
+            <a *ngIf="isAdmin" class="btn btn-primary" (click)="editCat(cat)">עריכה</a>
+            <a *ngIf="isAdmin" class="btn btn-success" (click)="adoptCat(cat)">מסור לאימוץ</a>
+          </div>
         </div>
       </div>
     </div>
