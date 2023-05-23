@@ -1,0 +1,23 @@
+<form [formGroup]="fosterCareForm" (ngSubmit)="submitForm()">
+  <div class="form-group">
+    <label for="startDate">תאריך התחלה</label>
+    <input type="date" id="startDate" name="startDate" formControlName="startDate" required class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="finishDate">תאריך סיום</label>
+    <input type="date" id="finishDate" name="finishDate" formControlName="finishDate" required class="form-control">
+  </div>
+
+  <div class="form-group">
+    <label for="catId">חתול</label>
+    <select id="catId" name="catId" formControlName="catId" required class="form-control"
+            [(ngModel)]="fosterCareForm.value.catId">
+      <option *ngFor="let cat of cats" [value]="cat.id">{{ cat.name }}</option>
+    </select>
+  </div>
+  <div *ngIf="fosterCareForm.errors?.['dateComparison']" class="text-danger">
+    תאריך הסיום חייב להיות מאוחר יותר מתאריך ההתחלה
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="fosterCareForm.invalid">שלח</button>
+</form>

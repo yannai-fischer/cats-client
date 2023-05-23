@@ -1,0 +1,111 @@
+<h2>דף מנהל</h2>
+
+<!-- Pending User Applications -->
+<h3>בקשות משתמשים ממתינות</h3>
+<ul>
+  <li *ngFor="let user of pendingUsers">
+    {{ user.firstName }} {{ user.lastName }}
+    <button (click)="approveUser(user.id ?? -1)">אשר משתמש</button>
+    <button (click)="rejectUser(user.id ?? -1)">דחה משתמש</button>
+    <!--    <button (click)="resetPassword(user.id ?? -1)">איפוס סיסמה</button>-->
+  </li>
+  <div *ngIf="!pendingUsers.length">אין בקשות פתוחות...</div>
+</ul>
+
+<!-- Pending Foster Care Applications -->
+<h3>בקשות אומנה ממתינות</h3>
+<ul>
+  <div *ngFor="let application of pendingFosterApplications">
+    <div class="container">
+      <div class="row">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">{{getRelevantCatName(application.catId)}}</h5>
+            <p class="card-text">מגיש הבקשה: {{getRelevantUserFullName(application.userId)}}</p>
+            <p class="card-text">תאריך תחילה: {{ application.startDate | date:'dd/MM/yyyy' }}</p>
+            <p class="card-text">תאריך סיום: {{ application.finishDate | date:'dd/MM/yyyy' }}</p>
+          </div>
+          <button (click)="approveFosterApplication(application.id ?? -1)">אשר בקשת אומנה</button>
+          <button (click)="rejectFosterApplication(application.id ?? -1)">דחה בקשת אומנה</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!pendingFosterApplications.length">אין בקשות פתוחות...</div>
+</ul>
+
+<!-- Add New Cat -->
+<h3>הוסף חתול חדש</h3>
+<form [formGroup]="addCatForm" (ngSubmit)="addCat()">
+  <div class="form-group">
+    <label for="name">שם</label>
+    <input type="text" id="name" formControlName="name" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="age">גיל</label>
+    <input type="number" id="age" formControlName="age" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <input type="radio" id="male" formControlName="sex" name="sex" value="male" required>
+    <label for="male">זכר</label>
+  </div>
+  <div class="form-group">
+    <input type="radio" id="female" formControlName="sex" name="sex" value="female" required>
+    <label for="female">נקבה</label>
+  </div>
+  <div class="form-group">
+    <label for="dateOfArrival">זמן הגעה</label>
+    <input type="datetime-local" id="dateOfArrival" name="dateOfArrival" formControlName="dateOfArrival"
+    required class="form-control"/>
+  </div>
+  <div class="form-group">
+    <label for="illnesses">מחלות</label>
+    <input type="text" id="illnesses" formControlName="illnesses" class="form-control" placeholder="הוסף מחלה">
+    <button type="button" (click)="addIllness()" class="btn btn-secondary">הוסף</button>
+  </div>
+  <ul *ngFor="let illness of catIllnesses" class="illnesses-list">
+    <li>{{ illness }}</li>
+  </ul>
+  <div class="form-group">
+    <input type="checkbox" id="isVaccinated" formControlName="isVaccinated">
+    <label for="isVaccinated">מחוסן</label>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" id="isVetted" formControlName="isVetted">
+    <label for="isVetted">נבדק וטרינרית</label>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" id="isNeutered" formControlName="isNeutered">
+    <label for="isNeutered">מעוקר</label>
+  </div>
+  <div class="form-group">
+    <input type="checkbox" id="hasWorms" formControlName="hasWorms">
+    <label for="hasWorms">מתולע</label>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="addCatForm.invalid">הוסף חתול</button>
+</form>
+
+<h3>אפס ססמאות</h3>
+<div *ngFor="let user of users" class="user-item">
+  <span>{{ user.firstName }} {{ user.lastName}}</span>
+  <button (click)="resetPassword(user.id ?? -1)">איפוס סיסמה</button>
+</div>
+
+
+<!-- Edit Existing Cat -->
+<h3>ערוך חתול קיים</h3>
+<form [formGroup]="editCatForm" (ngSubmit)="editCat()">
+  <div class="form-group">
+    <label for="id">מספר זיהוי</label>
+    <input type="number" id="id" formControlName="id" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="name">שם</label>
+    <input type="text" id="name" formControlName="name" class="form-control" required>
+  </div>
+  <div class="form-group">
+    <label for="age">גיל</label>
+    <input type="number" id="age" formControlName="age" class="form-control" required>
+  </div>
+  <button type="submit" class="btn btn-primary" [disabled]="editCatForm.invalid">ערוך חתול</button>
+</form>

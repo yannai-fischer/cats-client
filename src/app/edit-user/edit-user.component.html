@@ -1,0 +1,41 @@
+<div class="container">
+  <h1>ערוך משתמש</h1>
+  <h5>מלא רק שדות שתרצה לשנות</h5>
+  <form [formGroup]="signupForm" (ngSubmit)="onEdit()">
+    <div class="form-group">
+      <label for="firstName">שם פרטי:</label>
+      <input type="text" id="firstName" class="form-control" formControlName="firstName">
+    </div>
+    <div class="form-group">
+      <label for="lastName">שם משפחה:</label>
+      <input type="text" id="lastName" class="form-control" formControlName="lastName">
+    </div>
+    <div class="form-group">
+      <label for="address">כתובת:</label>
+      <input type="text" id="address" class="form-control" formControlName="address">
+    </div>
+    <div class="form-group">
+      <label for="phone">מספר טלפון:</label>
+      <input type="tel" id="phone" class="form-control" formControlName="phone">
+    </div>
+    <div class="form-group">
+      <label for="password">סיסמה:</label>
+      <input type="password" id="password" class="form-control" formControlName="password">
+      <div
+        *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)"
+        class="alert alert-danger">
+        על הסיסמה להיות 8 תווים לפחות
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="email">כתובת אימייל:</label>
+      <input type="email" id="email" class="form-control" formControlName="email">
+      <div
+        *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)"
+        class="alert alert-danger">
+        <div *ngIf="signupForm.get('email')?.errors?.['email']">כתובת אימייל לא תקינה</div>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">ערוך</button>
+  </form>
+</div>

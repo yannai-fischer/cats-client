@@ -1,0 +1,41 @@
+h3, h2 {
+  margin-top: 5%;
+}
+
+form {
+  margin-bottom: 2%;
+}
+
+label {
+  margin-right: 1%;
+  margin-left: 1%;
+}
+
+.user-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.user-item span {
+  flex-grow: 1;
+  margin-right: 10px;
+}
+
+.user-item button {
+  background-color: #337ab7;
+  color: #fff;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.user-item button:hover {
+  background-color: #23527c;
+}
+
+.illnesses-list {
+  list-style-type: disc;
+  margin-left: 20px;
+}
+

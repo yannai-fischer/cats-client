@@ -1,0 +1,52 @@
+<div class="container">
+  <h1>הירשם לאתר</h1>
+  <form [formGroup]="signupForm" (ngSubmit)="onSignup()">
+    <div class="form-group">
+      <label for="firstName">שם פרטי:</label>
+      <input type="text" id="firstName" class="form-control" formControlName="firstName" required>
+    </div>
+    <div class="form-group">
+      <label for="lastName">שם משפחה:</label>
+      <input type="text" id="lastName" class="form-control" formControlName="lastName" required>
+    </div>
+    <div class="form-group">
+      <label for="address">כתובת:</label>
+      <input type="text" id="address" class="form-control" formControlName="address" required>
+    </div>
+    <div class="form-group">
+      <label for="username">שם משתמש:</label>
+      <input type="text" id="username" class="form-control" formControlName="username" required>
+    </div>
+    <div class="form-group">
+      <label for="phone">מספר טלפון:</label>
+      <input type="tel" id="phone" class="form-control" formControlName="phone" required>
+    </div>
+    <div class="form-group">
+      <label for="email">כתובת אימייל:</label>
+      <input type="email" id="email" class="form-control" formControlName="email" required>
+      <div *ngIf="signupForm.get('email')?.invalid && (signupForm.get('email')?.dirty || signupForm.get('email')?.touched)" class="alert alert-danger">
+        <div *ngIf="signupForm.get('email')?.errors?.['required']">שדה חובה</div>
+        <div *ngIf="signupForm.get('email')?.errors?.['email']">כתובת אימייל לא תקינה</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="password">סיסמה:</label>
+      <input type="password" id="password" class="form-control" formControlName="password" required>
+      <div *ngIf="signupForm.get('password')?.invalid && (signupForm.get('password')?.dirty || signupForm.get('password')?.touched)" class="alert alert-danger">
+        <div *ngIf="signupForm.get('password')?.errors?.['required']">שדה חובה</div>
+        <div *ngIf="signupForm.get('password')?.errors?.['minlength']">הסיסמה חייבת להכיל לפחות 8 תווים</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="confirmPassword">אישור סיסמה:</label>
+      <input type="password" id="confirmPassword" class="form-control" formControlName="confirmPassword" required>
+      <div *ngIf="signupForm.get('confirmPassword')?.invalid && (signupForm.get('confirmPassword')?.dirty || signupForm.get('confirmPassword')?.touched)" class="alert alert-danger">
+        <div *ngIf="signupForm.get('confirmPassword')?.errors?.['required']">שדה חובה</div>
+        הסיסמאות לא תואמות
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary" [disabled]="signupForm.invalid">הירשם</button>
+  </form>
+  <hr>
+  <p>כבר יש לך חשבון? <a routerLink="/login">כניסה לחשבון</a></p>
+</div>

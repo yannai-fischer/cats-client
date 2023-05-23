@@ -1,0 +1,67 @@
+<h2>נסיעות</h2>
+
+<div class="row">
+  <div class="col-md-6">
+    <h3>צור נסיעה חדשה</h3>
+    <form [formGroup]="rideForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="catId">חתול</label>
+        <select id="catId" name="catId" formControlName="catId" required class="form-control">
+          <option *ngFor="let cat of cats" [value]="cat.id">{{ cat.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="timeOfDeparture">זמן יציאה</label>
+        <input type="datetime-local" id="timeOfDeparture" name="timeOfDeparture" formControlName="timeOfDeparture"
+               required class="form-control"/>
+      </div>
+      <div class="form-group">
+        <label for="source">מוצא</label>
+        <input type="text" id="source" name="source" formControlName="source" required class="form-control"
+               [ngClass]="{ 'is-invalid': rideForm.get('source')?.['invalid'] && rideForm.get('source')?.['touched'] }"/>
+        <div class="invalid-feedback" *ngIf="rideForm.get('source')?.errors?.['required']">שדה זה הוא חובה</div>
+        <div class="invalid-feedback" *ngIf="rideForm.get('source')?.errors?.['invalidLocation']">אנא הזן מיקום תקין בעברית</div>
+      </div>
+      <div class="form-group">
+        <label for="destination">יעד</label>
+        <input type="text" id="destination" name="destination" formControlName="destination" required class="form-control"
+               [ngClass]="{ 'is-invalid': rideForm.get('destination')?.['invalid'] && rideForm.get('destination')?.['touched'] }"/>
+        <div class="invalid-feedback" *ngIf="rideForm.get('destination')?.errors?.['required']">שדה זה הוא חובה</div>
+        <div class="invalid-feedback" *ngIf="rideForm.get('destination')?.errors?.['invalidLocation']">אנא הזן מיקום תקין בעברית</div>
+      </div>
+      <button type="submit" class="btn btn-primary">צור נסיעה</button>
+    </form>
+  </div>
+</div>
+
+<div class="row mt-5">
+  <div class="col-md-12">
+    <h3>רשימת הנסיעות</h3>
+    <table class="table">
+      <thead>
+      <tr>
+        <th>חתול</th>
+        <th>זמן יציאה</th>
+        <th>מוצא</th>
+        <th>יעד</th>
+        <th>נהג</th>
+        <th>פעולות</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let ride of rides">
+        <td>{{ getRelevantCatName(ride.catId) }}</td>
+        <td>{{ ride.timeOfDeparture | date:'dd/MM/yyyy HH:mm' }}</td>
+        <td>{{ ride.source }}</td>
+        <td>{{ ride.destination }}</td>
+        <td *ngIf="ride.userId">יש נהג</td>
+        <td *ngIf="!ride.userId">-</td>
+        <td>
+          <button *ngIf="!ride.userId" class="btn btn-primary" (click)="onJoinRide(ride)">הצטרף כנהג</button>
+          <button *ngIf="user.isAdmin" class="btn btn-danger" (click)="onDeleteRide(ride?.id ?? -1)">מחק נסיעה</button>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
